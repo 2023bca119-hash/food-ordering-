@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration form</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div  class="row" style="height: 150px;">
+
+    </div>
+    <div class="row">
+        <div class="col-lg-4" style="height: 400px;">
+
+        </div>
+        <div class="col-lg-4" style="height: 420px; background-color: lightgray;">
+            <form action="register" method="post" style="text-align:center;">
+             {% csrf_token %} 
+                <h2  >Registration</h2>
+                    <input type="text" name="first_name" placeholder="Enter your name🫵🏻" style="height: 25px; width: 70%;">
+                    <br>
+                    <br>
+                    <input type="text" name="last_name" placeholder="Select a last name🫶🏻"style="height: 25px; width: 70%;">
+                    <br>
+                    <br>
+                    <input type="text" name="username" placeholder="Select a username🫶🏻"style="height: 25px; width: 70%;">
+                    <br><br>
+                    <input type="password" name="password1" placeholder="password🦶🏻" style="height: 25px; width: 70%;">
+                    <br>
+                    <br>
+                    <input type="password" name="password2" placeholder="confirm password✅"style="height: 25px; width: 70%;">
+                    <br>
+                    <br>
+                    <input type="email" name ="email" placeholder="email📧" style="height: 25px; width: 70%;">
+                    <br>
+                    <br>
+                    <input type="submit" value="Register" name="">
+                    <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-6" style="height: 1px;">
+                            Already Registered <a href="login">login</a>
+                        </div>
+                        <div class="col-lg-6" style="height: 1px;">
+                        </div>
+                    </div>
+    
+                </form>
+
+        </div>
+        <div class="col-lg-4" style="height: 400px;">
+
+        </div>
+    </div>
+    <div class="row" style="height: 150px;">
+
+    </div>
+    
+</body>
+</html>
+
+

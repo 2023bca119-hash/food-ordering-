@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axis College - Cafeteria Ordering System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #3949ab;
+            --accent-color: #ff4081;
+            --light-color: #f5f5f5;
+            --dark-color: #212121;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --error-color: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 20px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-actions button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .user-actions button:hover {
+            background-color: var(--accent-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+        
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(26, 35, 126, 0.7), rgba(57, 73, 171, 0.7));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+        
+        .hero-overlay h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-overlay p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        /* Cafeteria Section */
+        .cafeteria-section {
+            padding: 4rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .cafeteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 20px;
+        }
+        
+        .cafeteria-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cafeteria-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .cafeteria-image {
+            height: 180px;
+            overflow: hidden;
+        }
+        
+        .cafeteria-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .cafeteria-card:hover .cafeteria-image img {
+            transform: scale(1.05);
+        }
+        
+        .cafeteria-info {
+            padding: 1.5rem;
+        }
+        
+        .cafeteria-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .cafeteria-info p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .view-menu-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .view-menu-btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        /* Menu Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .close-modal:hover {
+            color: var(--error-color);
+        }
+        
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .menu-items {
+            margin-bottom: 20px;
+        }
+        
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .menu-item-info {
+            flex: 1;
+        }
+        
+        .menu-item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .menu-item-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .menu-item-price {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-right: 15px;
+        }
+        
+        .add-to-order {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .add-to-order:hover {
+            background-color: #388e3c;
+        }
+        
+        .order-summary {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+        }
+        
+        .checkout-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .checkout-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .checkout-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Login/Signup Modal */
+        .auth-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .auth-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+        
+        .auth-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .auth-submit:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Checkout Modal */
+        .checkout-section {
+            margin-top: 20px;
+        }
+        
+        .checkout-section h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .time-slot {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .time-slot:hover {
+            border-color: var(--secondary-color);
+        }
+        
+        .time-slot.selected {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .payment-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .payment-option {
+            flex: 1;
+            min-width: 120px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            border-color: var(--secondary-color);
+        }
+        
+        .payment-option.selected {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .payment-option i {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .place-order-btn {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .place-order-btn:hover {
+            background-color: #388e3c;
+        }
+        
+        /* Order Confirmation */
+        .confirmation-message {
+            display: none;
+            background-color: var(--success-color);
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links li {
+            margin: 0 15px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+        
+        .social-icons {
+            margin-top: 1rem;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--accent-color);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+            }
+            
+            .hero-overlay h2 {
+                font-size: 2rem;
+            }
+            
+            .cafeteria-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt6mLURN2g_f-PBZ-HIvjK6TfLKYHpE-ydyw&s"  alt="Axis College Logo">
+                <h1>Axis College</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/cafe/">Home</a></li>
+                    <li><a href="#cafeterias">Cafeterias</a></li>
+                    <li><a href="/cafe/about/">About</a></li>
+                    <li><a href="/cafe/about/">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <button id="loginBtn"><a href="/user/login" style="color:white"> Login</a></button>
+                <button id="signupBtn"><a href="/user/register" style="color:white">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <img src="https://axiscolleges.org/wp-content/uploads/2020/07/homeslider_background.jpg"  alt="Axis College Campus">
+        <div class="hero-overlay">
+            <h2>Welcome to Axis College Cafeteria</h2>
+            <p>Order delicious food from our four amazing cafeterias and enjoy your meals at your preferred time slots.</p>
+        </div>
+    </section>
+
+    <!-- Cafeteria Section -->
+    <section class="cafeteria-section" id="cafeterias">
+        <h2 class="section-title">Our Cafeterias</h2>
+        <div class="cafeteria-grid">
+            <!-- Brio Cafeteria -->
+            <div class="cafeteria-card" data-cafeteria="brio">
+                <div class="cafeteria-image">
+                    <img src="https://picsum.photos/seed/briocafe/300/180.jpg" alt="Brio Cafeteria">
+                </div>
+                <div class="cafeteria-info">
+                    <h3>Brio</h3>
+                    <p>Italian cuisine with a modern twist. Fresh pasta, pizza, and more.</p>
+                    <button class="view-menu-btn">View Menu</button>
+                </div>
+            </div>
+
+            <!-- Cafe Cafeteria -->
+            <div class="cafeteria-card" data-cafeteria="cafe">
+                <div class="cafeteria-image">
+                    <img src="https://picsum.photos/seed/cafeteria/300/180.jpg" alt="Cafe Cafeteria">
+                </div>
+                <div class="cafeteria-info">
+                    <h3>Cafe</h3>
+                    <p>Your everyday coffee shop with sandwiches, pastries, and beverages.</p>
+                    <button class="view-menu-btn">View Menu</button>
+                </div>
+            </div>
+
+            <!-- Samocha Cafeteria -->
+            <div class="cafeteria-card" data-cafeteria="samocha">
+                <div class="cafeteria-image">
+                    <img src="https://picsum.photos/seed/samocha/300/180.jpg" alt="Samocha Cafeteria">
+                </div>
+                <div class="cafeteria-info">
+                    <h3>Samocha</h3>
+                    <p>Authentic Asian cuisine with a variety of flavors from across the continent.</p>
+                    <button class="view-menu-btn">View Menu</button>
+                </div>
+            </div>
+
+            <!-- Small Cafeteria -->
+            <div class="cafeteria-card" data-cafeteria="small">
+                <div class="cafeteria-image">
+                    <img src="https://picsum.photos/seed/smallcafe/300/180.jpg" alt="Small Cafeteria">
+                </div>
+                <div class="cafeteria-info">
+                    <h3>Small</h3>
+                    <p>Cozy spot with quick bites, snacks, and refreshing drinks.</p>
+                    <button class="view-menu-btn">View Menu</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Modal -->
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="menu-header">
+                <h2 id="cafeteriaName">Cafeteria Name</h2>
+                <div id="confirmationMessage" class="confirmation-message">
+                    Order placed successfully! The cafeteria has been notified.
+                </div>
+            </div>
+            <div class="menu-items" id="menuItems">
+                <!-- Menu items will be populated by JavaScript -->
+            </div>
+            <div class="order-summary">
+                <h3>Your Order</h3>
+                <div id="orderItems">
+                    <p class="empty-order">Your order is empty</p>
+                </div>
+                <div class="order-total">
+                    <span>Total:</span>
+                    <span id="orderTotal">₹0.00</span>
+                </div>
+                <button id="checkoutBtn" class="checkout-btn" disabled>Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="auth-container">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" data-tab="login"><a href="/user/register">Login</a></div>
+                    <div class="auth-tab" data-tab="signup"><a href="/user/register">Sign Up</a></div>
+                </div>
+                
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="auth-submit">Login</button>
+                </form>
+                
+                <form id="signupForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirm">Confirm Password</label>
+                        <input type="password" id="signupConfirm" required>
+                    </div>
+                    <button type="submit" class="auth-submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Complete Your Order</h2>
+            
+            <div class="checkout-section">
+                <h3>Select Pickup Time</h3>
+                <div class="time-slots">
+                    <div class="time-slot" data-time="10:40 AM - 10:50 AM">
+                        <div>Morning Break</div>
+                        <div>10:40 AM - 10:50 AM</div>
+                    </div>
+                    <div class="time-slot" data-time="12:30 PM - 1:20 PM">
+                        <div>Lunch Break</div>
+                        <div>12:30 PM - 1:20 PM</div>
+                    </div>
+                    <div class="time-slot" data-time="3:00 PM - 3:10 PM">
+                        <div>Afternoon Break</div>
+                        <div>3:00 PM - 3:10 PM</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="checkout-section">
+                <h3>Payment Method</h3>
+                <div class="payment-options">
+                    <div class="payment-option" data-payment="card">
+                        <i class="fas fa-credit-card"></i>
+                        <div>Credit/Debit Card</div>
+                    </div>
+                    <div class="payment-option" data-payment="wallet">
+                        <i class="fas fa-wallet"></i>
+                        <div>Digital Wallet</div>
+                    </div>
+                    <div class="payment-option" data-payment="cash">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>Cash on Pickup</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div id="checkoutOrderItems">
+                    <!-- Order items will be populated by JavaScript -->
+                </div>
+                <div class="order-total">
+                    <span>Total:</span>
+                    <span id="checkoutOrderTotal">₹0.00</span>
+                </div>
+                <button id="placeOrderBtn" class="place-order-btn">Place Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <ul class="footer-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#cafeterias">Cafeterias</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#terms">Terms of Service</a></li>
+            </ul>
+            <p>&copy; 2023 Axis College. All rights reserved.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu data for each cafeteria with prices in INR
+        const menuData = {
+            brio: [
+                { id: 'b1', name: 'Margherita Pizza', description: 'Classic pizza with tomato sauce and mozzarella', price: 299.00 },
+                { id: 'b2', name: 'Pasta Carbonara', description: 'Creamy pasta with bacon and parmesan', price: 349.00 },
+                { id: 'b3', name: 'Caesar Salad', description: 'Fresh romaine lettuce with caesar dressing', price: 249.00 },
+                { id: 'b4', name: 'Tiramisu', description: 'Classic Italian dessert', price: 199.00 },
+                { id: 'b5', name: 'Garlic Bread', description: 'Toasted bread with garlic butter', price: 129.00 }
+            ],
+            cafe: [
+                { id: 'c1', name: 'Cappuccino', description: 'Espresso with steamed milk foam', price: 129.00 },
+                { id: 'c2', name: 'Club Sandwich', description: 'Triple-layer sandwich with turkey, bacon, and veggies', price: 299.00 },
+                { id: 'c3', name: 'Chocolate Croissant', description: 'Buttery croissant with chocolate filling', price: 109.00 },
+                { id: 'c4', name: 'Fresh Fruit Salad', description: 'Seasonal fruits with honey dressing', price: 199.00 },
+                { id: 'c5', name: 'Iced Latte', description: 'Espresso with cold milk and ice', price: 149.00 }
+            ],
+            samocha: [
+                { id: 's1', name: 'Chicken Biryani', description: 'Fragrant rice with spiced chicken', price: 329.00 },
+                { id: 's2', name: 'Vegetable Spring Rolls', description: 'Crispy rolls with vegetable filling', price: 149.00 },
+                { id: 's3', name: 'Thai Green Curry', description: 'Spicy curry with coconut milk', price: 349.00 },
+                { id: 's4', name: 'Sushi Platter', description: 'Assorted sushi and sashimi', price: 429.00 },
+                { id: 's5', name: 'Mango Sticky Rice', description: 'Sweet dessert with mango and glutinous rice', price: 199.00 }
+            ],
+            small: [
+                { id: 'sm1', name: 'Cheeseburger', description: 'Beef patty with cheese and fresh veggies', price: 229.00 },
+                { id: 'sm2', name: 'French Fries', description: 'Crispy golden fries', price: 89.00 },
+                { id: 'sm3', name: 'Onion Rings', description: 'Crispy battered onion rings', price: 109.00 },
+                { id: 'sm4', name: 'Iced Tea', description: 'Refreshing cold tea', price: 79.00 },
+                { id: 'sm5', name: 'Chocolate Chip Cookie', description: 'Freshly baked cookie', price: 59.00 }
+            ]
+        };
+
+        // Global variables
+        let currentCafeteria = '';
+        let orderItems = [];
+        let selectedTimeSlot = '';
+        let selectedPaymentMethod = '';
+        let isLoggedIn = false;
+
+        // DOM elements
+        const menuModal = document.getElementById('menuModal');
+        const authModal = document.getElementById('authModal');
+        const checkoutModal = document.getElementById('checkoutModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+        const closeModalBtns = document.querySelectorAll('.close-modal');
+        const cafeteriaCards = document.querySelectorAll('.cafeteria-card');
+        const menuItemsContainer = document.getElementById('menuItems');
+        const orderItemsContainer = document.getElementById('orderItems');
+        const orderTotalElement = document.getElementById('orderTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const placeOrderBtn = document.getElementById('placeOrderBtn');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+
+        // Event listeners
+        loginBtn.addEventListener('click', () => {
+            authModal.style.display = 'block';
+            document.querySelector('.auth-tab[data-tab="login"]').click();
+        });
+
+        signupBtn.addEventListener('click', () => {
+            authModal.style.display = 'block';
+            document.querySelector('.auth-tab[data-tab="signup"]').click();
+        });
+
+        closeModalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                menuModal.style.display = 'none';
+                authModal.style.display = 'none';
+                checkoutModal.style.display = 'none';
+            });
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === menuModal || e.target === authModal || e.target === checkoutModal) {
+                menuModal.style.display = 'none';
+                authModal.style.display = 'none';
+                checkoutModal.style.display = 'none';
+            }
+        });
+
+        cafeteriaCards.forEach(card => {
+            card.addEventListener('click', () => {
+                currentCafeteria = card.dataset.cafeteria;
+                openMenuModal(currentCafeteria);
+            });
+        });
+
+        authTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                authTabs.forEach(t => t.classList.remove('active'));
+                authForms.forEach(f => f.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(${tabName}Form).classList.add('active');
+            });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // In a real application, you would authenticate the user here
+            isLoggedIn = true;
+            authModal.style.display = 'none';
+            loginBtn.textContent = 'My Account';
+            signupBtn.style.display = 'none';
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // In a real application, you would register the user here
+            isLoggedIn = true;
+            authModal.style.display = 'none';
+            loginBtn.textContent = 'My Account';
+            signupBtn.style.display = 'none';
+        });
+
+        checkoutBtn.addEventListener('click', () => {
+            if (orderItems.length === 0) return;
+            
+            checkoutModal.style.display = 'block';
+            updateCheckoutSummary();
+        });
+
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', () => {
+                timeSlots.forEach(s => s.classList.remove('selected'));
+                slot.classList.add('selected');
+                selectedTimeSlot = slot.dataset.time;
+                checkPlaceOrderButton();
+            });
+        });
+
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                paymentOptions.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedPaymentMethod = option.dataset.payment;
+                checkPlaceOrderButton();
+            });
+        });
+
+        placeOrderBtn.addEventListener('click', () => {
+            if (!selectedTimeSlot || !selectedPaymentMethod) return;
+            
+            // In a real application, you would send the order to the server here
+            // and notify the specific cafeteria
+            
+            // Show confirmation message
+            confirmationMessage.style.display = 'block';
+            
+            // Reset order
+            orderItems = [];
+            updateOrderSummary();
+            
+            // Close modals after a delay
+            setTimeout(() => {
+                checkoutModal.style.display = 'none';
+                menuModal.style.display = 'none';
+                confirmationMessage.style.display = 'none';
+            }, 3000);
+            
+            // Reset selections
+            selectedTimeSlot = '';
+            selectedPaymentMethod = '';
+            timeSlots.forEach(s => s.classList.remove('selected'));
+            paymentOptions.forEach(o => o.classList.remove('selected'));
+        });
+
+        // Functions
+        function openMenuModal(cafeteria) {
+            const cafeteriaName = cafeteria.charAt(0).toUpperCase() + cafeteria.slice(1);
+            document.getElementById('cafeteriaName').textContent = cafeteriaName + ' Menu';
+            
+            // Populate menu items
+            menuItemsContainer.innerHTML = '';
+            const items = menuData[cafeteria];
+            
+            items.forEach(item => {
+                const menuItemElement = document.createElement('div');
+                menuItemElement.className = 'menu-item';
+                menuItemElement.innerHTML = `
+                    <div class="menu-item-info">
+                        <div class="menu-item-name">${item.name}</div>
+                        <div class="menu-item-desc">${item.description}</div>
+                    </div>
+                    <div class="menu-item-price">₹${item.price.toFixed(2)}</div>
+                    <button class="add-to-order" data-id="${item.id}">Add to Order</button>
+                `;
+                menuItemsContainer.appendChild(menuItemElement);
+                
+                // Add event listener to the button
+                menuItemElement.querySelector('.add-to-order').addEventListener('click', () => {
+                    addToOrder(item);
+                });
+            });
+            
+            menuModal.style.display = 'block';
+        }
+
+        function addToOrder(item) {
+            // Check if item is already in order
+            const existingItem = orderItems.find(orderItem => orderItem.id === item.id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                orderItems.push({
+                    ...item,
+                    quantity: 1
+                });
+            }
+            
+            updateOrderSummary();
+        }
+
+        function updateOrderSummary() {
+            if (orderItems.length === 0) {
+                orderItemsContainer.innerHTML = '<p class="empty-order">Your order is empty</p>';
+                checkoutBtn.disabled = true;
+            } else {
+                orderItemsContainer.innerHTML = '';
+                let total = 0;
+                
+                orderItems.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    
+                    const orderItemElement = document.createElement('div');
+                    orderItemElement.className = 'order-item';
+                    orderItemElement.innerHTML = `
+                        <span>${item.name} x ${item.quantity}</span>
+                        <span>₹${itemTotal.toFixed(2)}</span>
+                    `;
+                    orderItemsContainer.appendChild(orderItemElement);
+                });
+                
+                orderTotalElement.textContent = ₹${total.toFixed(2)};
+                checkoutBtn.disabled = false;
+            }
+        }
+
+        function updateCheckoutSummary() {
+            const checkoutOrderItems = document.getElementById('checkoutOrderItems');
+            const checkoutOrderTotal = document.getElementById('checkoutOrderTotal');
+            
+            checkoutOrderItems.innerHTML = '';
+            let total = 0;
+            
+            orderItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const orderItemElement = document.createElement('div');
+                orderItemElement.className = 'order-item';
+                orderItemElement.innerHTML = `
+                    <span>${item.name} x ${item.quantity}</span>
+                    <span>₹${itemTotal.toFixed(2)}</span>
+                `;
+                checkoutOrderItems.appendChild(orderItemElement);
+            });
+            
+            checkoutOrderTotal.textContent = ₹${total.toFixed(2)};
+        }
+
+        function checkPlaceOrderButton() {
+            if (selectedTimeSlot && selectedPaymentMethod) {
+                placeOrderBtn.disabled = false;
+            } else {
+                placeOrderBtn.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>
